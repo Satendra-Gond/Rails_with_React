@@ -36,6 +36,17 @@ export const TextOperation = () => {
     setTextActionStatus({ actionStatus: true, actionText: "" }); // Reset the status
   };
 
+  const onRemoveSpaceAction = () => {
+    setText(text.replace(/\s+/g, ''));
+  }
+
+  const textOnChangeAction = (e) => {
+    setText(e.target.value);
+    const words = text.trim().split(/\s+/).filter(word => word.length > 0); // Split and filter out empty strings
+    const wordCount = words.length; // Get the number of words
+    document.getElementById("wordCount").textContent = wordCount;
+  }
+
   return (
     <>
       <div className="container py-5">
@@ -44,7 +55,7 @@ export const TextOperation = () => {
           className="form-control"
           id="message"
           rows="5"
-          onChange={(e) => setText(e.target.value)} // Update the text state
+          onChange={textOnChangeAction} // Update the text state
           value={text} // Bind the text state to the textarea
           placeholder="Type your text here..."
         ></textarea>
@@ -58,8 +69,15 @@ export const TextOperation = () => {
               Copy Text
             </button>
 
+            <button 
+              className="btn btn-sm btn-primary mx-2"
+              onClick={onRemoveSpaceAction}
+            >
+              Remove space
+            </button>
+
             <button
-              className="btn btn-sm btn-secondary mx-2"
+              className="btn btn-sm btn-secondary"
               onClick={onClearAction}
             >
               Clear
@@ -78,6 +96,8 @@ export const TextOperation = () => {
             )}
           </div>
         </div>
+
+        <span>Total word: <span id="wordCount"></span></span>
       </div>
     </>
   );
